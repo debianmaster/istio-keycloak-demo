@@ -55,7 +55,7 @@ to lookup configmaps in other namespaces especially from istio-system
 [source,sh]
 ----
 ./mvnw -Distio.home=[your istio home folder] clean package fabric8:build <1>
-oc apply -f $DEMO_HOME/src/istio/istio-cars-api-0.0.1.yml <2>
+oc apply -f $DEMO_HOME/cars-api/src/istio/istio-cars-api-0.0.1.yml <2>
 ----
 
 <1> Build the app, create the kube-injected yaml and the docker image of the application
@@ -68,7 +68,7 @@ To configure the JWT-Auth Filter and the required cluster we need to configure I
 
 [source,sh]
 ----
-oc apply -f $DEMO_HOME/src/istio/car-api-auth_config.yaml
+oc apply -f $DEMO_HOME/cars-api/src/istio/car-api-auth_config.yaml
 ----
 
 The End user auth spec will add JWT-Auth filter to the Mixer config of the cars-api application
@@ -114,9 +114,9 @@ is protected
 ---
 kubectl run -i --rm --restart=Never tokenizer --image=tutum/curl \
 --command \
--- curl -X POST 'http://keycloak.istio-system:8080/auth/realms/istio/protocol/openid-connect/token' \
+-- curl -s -X POST 'http://keycloak.myproject:8080/auth/realms/istio/protocol/openid-connect/token' \
 -H "Content-Type: application/x-www-form-urlencoded" \
--d 'username={demo-user}&password={demo-user}&grant_type=password&client_id=cars-web' | jq .access_token 
+-d 'username=demo&password=demo&grant_type=password&client_id=cars-web' | jq .access_token 
 ---
 
 The above command will output Authorization token from Keycloak, store the value in an environment variable called `$token`.
