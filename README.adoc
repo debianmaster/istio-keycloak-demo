@@ -98,7 +98,7 @@ NOTE: WIP post JWT-Auth change to configure the Keycloak Adapter url in a right 
 
 [source,sh]
 ----
-curl -vvv $(minishift openshift service cars-api)/cars/list
+curl -vvv $(minishift openshift service cars-api -u)/cars/list
 ----
 
 Above command you should see a response like `UNKNOWN:handler.denier.default:Not Authorized` as the API
@@ -125,7 +125,7 @@ Once we have generated the token fire the command below with the token,
 
 [source,sh]
 ----
-curl -vvv -H "Authorization: Bearer $token" $(minishift openshift service cars-api)/cars/list
+curl -vvv -H "Authorization: Bearer $token" $(minishift openshift service cars-api -u)/cars/list
 ----
 
 Above command you should see a response like `["BMW","Hyundai Verna","Audi","Ferrari"]`
